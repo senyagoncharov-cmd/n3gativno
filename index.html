@@ -1,0 +1,1118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>N3GATIVNO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=Unbounded:wght@900&family=Dela+Gothic+One&display=swap">
+<style>
+/* Layout: овсяная бумага и глубокий индиго. Главная: первый экран → популярное → история с выезжающим названием. Всё остальное — в панелях: меню-поиск, ассортимент, в зале, бренды, FAQ, о нас, карточка вещи */
+:root{
+  --paper:#f1ece3;
+  --paper2:#e7dfd2;
+  --line:#d4c9b7;
+  --ink:#1c2541;
+  --muted:#5e6378;
+  --denim:#3d5a8a;
+  --powder:#b4c4d9;
+  --navy:#1e2b5c;
+  --navy-deep:#111938;
+  --f-logo:"Unbounded","Arial Black",sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-bold:"Dela Gothic One","Arial Black",Impact,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+button{font-family:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,label:focus-within{outline:2px solid var(--denim);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.o3{color:transparent;-webkit-text-stroke:.045em var(--ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.muted{color:var(--muted)}
+
+/* шапка */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(8px);border-bottom:2px solid var(--ink)}
+.top .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding-block:10px}
+.logo{font-family:var(--f-logo);font-weight:900;font-size:clamp(17px,2vw,22px);letter-spacing:-.04em;text-decoration:none;white-space:nowrap;justify-self:center}
+.logo .o3{-webkit-text-stroke:1.3px var(--ink)}
+.iconbtn{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--ink);background:transparent;color:var(--ink);height:40px;padding:0 12px;font-weight:600;font-size:14px;cursor:pointer}
+.iconbtn:hover{background:var(--ink);color:var(--paper)}
+.iconbtn svg{width:18px;height:18px}
+.iconbtn b{font-variant-numeric:tabular-nums}
+.hl{justify-self:start}.hr{justify-self:end}
+.iconbtn.plain{border-color:transparent;padding:0 6px}
+.iconbtn.plain:hover{background:transparent;color:var(--denim)}
+.hbtns{display:flex;gap:8px}
+.cartbtn{background:var(--ink);color:var(--paper)}
+.cartbtn:hover{background:transparent;color:var(--ink)}
+.cartbtn.bump{animation:bump .5s ease}
+@keyframes bump{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.qty{display:inline-flex;align-items:stretch;border:2px solid var(--ink);height:40px}
+.qty button{width:34px;border:0;background:transparent;color:var(--ink);font-size:18px;font-weight:700;cursor:pointer}
+.qty button:hover:not(:disabled){background:var(--ink);color:var(--paper)}
+.qty button:disabled{opacity:.3;cursor:default}
+.qty span{min-width:30px;display:grid;place-items:center;font-weight:700;font-variant-numeric:tabular-nums;border-inline:2px solid var(--ink)}
+.addrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.addrow .btn{height:40px;padding:0 14px}
+.clines{list-style:none;margin:0;padding:0;display:grid;gap:12px;overflow:auto;flex:1;min-height:0;align-content:start}
+.clines li{display:grid;grid-template-columns:56px 1fr;gap:12px;border-bottom:2px solid var(--line);padding-bottom:12px}
+.clines li svg{width:56px;height:auto}
+.clines b{display:block;font-size:14px;line-height:1.25}
+.clines .cb{font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:600}
+.clines .cctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.clines select{border:2px solid var(--ink);background:var(--paper);color:var(--ink);height:40px;padding:0 8px;font:600 14px var(--f-body);border-radius:0}
+@media (max-width:520px){.iconbtn .lbl{display:none}}
+
+/* первый экран */
+.hero{position:relative;min-height:min(calc(100svh - 64px),920px);display:flex;align-items:center;padding-block:clamp(48px,8vw,96px);overflow:hidden;cursor:crosshair;border-bottom:2px solid var(--ink)}
+.hero>.wrap{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
+.word{font-family:var(--f-logo);font-weight:900;font-size:clamp(40px,13vw,190px);line-height:.9;letter-spacing:-.055em;margin:0;white-space:nowrap;max-width:100%}
+.word .o3{-webkit-text-stroke:.03em var(--ink)}
+#heroWord{display:inline-block;margin-right:-.055em}
+.word{text-align:center;width:100%}
+.hero-foot{display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:clamp(28px,4vw,48px);max-width:620px}
+.hero-foot p{margin:0;font-size:clamp(16px,1.4vw,19px);line-height:1.5;color:var(--muted);text-wrap:balance}
+.hero-foot .claim{font-family:var(--f-bold);font-size:clamp(22px,2.4vw,32px);line-height:1.1;color:var(--ink);text-transform:uppercase}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.lens{position:absolute;width:240px;height:240px;border-radius:50%;left:0;top:0;pointer-events:none;background:#fff;mix-blend-mode:difference;transform:translate(-50%,-50%) scale(0);transition:transform .35s cubic-bezier(.2,.8,.2,1);z-index:3}
+.hero.on .lens{transform:translate(-50%,-50%) scale(1)}
+@media (hover:none){.lens{display:none}}
+.word,.hero-foot{transition:opacity .7s ease,transform .7s ease}
+.hero-foot{transition-delay:.1s}
+.intro .word{opacity:0}
+.intro .hero-foot{opacity:0;transform:translateY(18px)}
+#dust{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60;transition:opacity .6s ease}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 15px/1 var(--f-body);padding:15px 22px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);text-decoration:none;cursor:pointer;transition:background .15s,color .15s,transform .15s}
+.btn:hover{background:transparent;color:var(--ink)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.btn.sm{padding:10px 14px;font-size:14px}
+.btn:disabled{opacity:.45;cursor:default}
+
+section{padding-block:clamp(64px,9vw,112px)}
+.head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:clamp(26px,4vw,44px)}
+h2.bold{font-family:var(--f-bold);font-weight:400;letter-spacing:-.02em;font-size:clamp(34px,5.2vw,68px);line-height:.95;margin:0;text-transform:uppercase}
+.lead{max-width:44ch;color:var(--muted);margin:0}
+
+/* карточки */
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--ink);background:transparent;color:var(--ink);padding:8px 14px;font-weight:600;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chip:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+.chip[aria-pressed="true"]:hover{background:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(18px,2.4vw,30px) clamp(14px,2vw,24px)}
+@media (max-width:980px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.item{display:grid;gap:8px;align-content:start;position:relative}
+.item .open{all:unset;cursor:pointer;display:grid;gap:8px}
+.item .open:focus-visible{outline:2px solid var(--denim);outline-offset:4px}
+.item .pic{aspect-ratio:4/5;max-width:100%;background:var(--paper2);border:2px solid var(--ink);display:grid;place-items:center;position:relative;overflow:hidden;transition:background .2s}
+.item:nth-child(odd) .pic{transform:rotate(-.6deg)}
+.item:nth-child(even) .pic{transform:rotate(.5deg)}
+.item .open:hover .pic{background:#ded4c3}
+.item .pic svg{width:66%;height:auto;filter:drop-shadow(3px 4px 0 rgba(28,37,65,.16))}
+.item .tag{position:absolute;top:10px;left:10px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;background:var(--denim);color:var(--paper)}
+.item .soon{position:absolute;right:10px;bottom:8px;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.item .heart{position:absolute;top:8px;right:8px;width:40px;height:40px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;z-index:2}
+.item .heart[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.item h3{margin:0;font-size:16px;font-weight:700;line-height:1.25}
+.item .brand{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.item .instore{font-size:12px;font-weight:600;color:var(--muted)}
+.item .instore b{color:var(--ink)}
+.more{display:flex;justify-content:center;margin-top:clamp(28px,4vw,44px)}
+
+/* история + выезжающее название */
+.story{border-top:2px solid var(--ink);padding-bottom:clamp(40px,6vw,64px);overflow:hidden}
+.story-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(24px,6vw,96px);align-items:end}
+h2.bold.story-h{font-size:clamp(26px,3.4vw,44px);line-height:1.05;max-width:20ch;text-transform:none}
+.story-txt p{margin:0;color:var(--ink);font-size:clamp(18px,1.8vw,23px);line-height:1.4;font-weight:500;max-width:46ch}
+@media (max-width:820px){.story-in{grid-template-columns:1fr}}
+.finale{margin-top:clamp(56px,9vw,110px);perspective:900px;perspective-origin:50% 0%}
+.stage3d{--p:0;transform-style:preserve-3d;text-align:center;transform:translateY(calc((1 - var(--p)) * 55%)) rotateX(calc((1 - var(--p)) * 78deg)) scale(calc(.85 + var(--p) * .15));opacity:calc(.15 + var(--p) * .85);transform-origin:50% 100%;will-change:transform}
+.big3d{font-family:var(--f-logo);font-weight:900;font-size:clamp(44px,14.4vw,210px);line-height:.9;letter-spacing:-.06em;margin:0;color:var(--navy);white-space:nowrap;text-transform:uppercase}
+.big3d .o3{color:var(--paper);-webkit-text-stroke:.02em var(--navy)}
+.under{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(28px,4vw,48px);padding-top:16px;border-top:2px solid var(--ink);color:var(--muted);font-size:14px}
+.under button{background:none;border:0;padding:0;color:inherit;font:inherit;text-decoration:underline;cursor:pointer}
+
+/* панели */
+.sheet{position:fixed;inset:0;z-index:66;background:var(--paper);overflow:auto;overscroll-behavior:contain;padding-bottom:calc(48px + env(safe-area-inset-bottom,0px))}
+.sheet.lvl2{z-index:67}
+.sheet-bar{position:sticky;top:0;z-index:3;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(8px);border-bottom:2px solid var(--ink);padding-top:env(safe-area-inset-top,0px)}
+.sheet-bar .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:12px}
+.sheet-bar h2.bold{font-size:clamp(24px,3.4vw,40px)}
+.sheet-body{padding-top:24px;display:grid;gap:22px}
+.x{border:2px solid var(--ink);background:transparent;width:40px;height:40px;font-size:20px;cursor:pointer;color:var(--ink);flex:none}
+.x:hover{background:var(--ink);color:var(--paper)}
+.back{border:0;background:none;font:600 15px var(--f-body);color:var(--ink);cursor:pointer;padding:8px 0}
+
+/* меню-поиск */
+.sfield{position:relative}
+.sfield svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;stroke:var(--muted)}
+.sfield input{width:100%;background:var(--paper2);border:2px solid var(--ink);color:var(--ink);padding:16px 18px 16px 50px;font:500 18px var(--f-body);border-radius:0}
+.sfield input::placeholder{color:var(--muted)}
+.menu{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(24px,5vw,72px)}
+@media (max-width:760px){.menu{grid-template-columns:1fr}}
+.menu h3{margin:0 0 10px;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.cats{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.cats li{border-bottom:2px solid var(--line)}
+.cats button{all:unset;box-sizing:border-box;width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 0;cursor:pointer;font-family:var(--f-bold);font-size:clamp(22px,2.8vw,34px);text-transform:uppercase;line-height:1.05}
+.cats button:hover{color:var(--denim)}
+.cats button:focus-visible{outline:2px solid var(--denim)}
+.cats button small{font-family:var(--f-body);font-size:13px;font-weight:600;color:var(--muted)}
+.links{display:grid;gap:4px;align-content:start}
+.links button{all:unset;cursor:pointer;font-size:20px;font-weight:700;padding:8px 0;border-bottom:2px solid var(--line)}
+.links button:hover{color:var(--denim)}
+.links button:focus-visible{outline:2px solid var(--denim)}
+.results{display:grid;gap:0;border-top:2px solid var(--ink)}
+.res{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:48px 1fr auto;gap:14px;align-items:center;padding:10px 0;border-bottom:2px solid var(--line)}
+.res:hover b{color:var(--denim)}
+.res:focus-visible{outline:2px solid var(--denim)}
+.res svg{width:48px;height:auto}
+.res b{display:block;font-size:15px}
+.res span{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase}
+
+/* в зале */
+.stockctl{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.tgl{display:inline-flex;gap:8px;align-items:center;font-weight:600;cursor:pointer}
+.tgl input{width:18px;height:18px;accent-color:var(--ink)}
+.stock{display:grid;border-top:2px solid var(--ink)}
+.srow{display:grid;grid-template-columns:64px minmax(0,1.4fr) minmax(0,1.2fr) auto;gap:16px;align-items:center;padding-block:14px;border-bottom:2px solid var(--line)}
+.srow .open{all:unset;cursor:pointer;display:contents}
+.srow svg{width:64px;height:auto}
+.srow b{display:block;font-size:16px;line-height:1.25}
+.srow .br{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.srow .st{font-size:13px;font-weight:600;color:var(--muted)}
+@media (max-width:720px){.srow{grid-template-columns:56px minmax(0,1fr)}.srow .szl,.srow .acts{grid-column:2}}
+.szl{display:flex;gap:6px;flex-wrap:wrap}
+.szl span{min-width:38px;text-align:center;padding:5px 6px;border:2px solid var(--ink);font-weight:700;font-size:13px}
+.szl span.no{border-color:var(--line);color:#b3a892;text-decoration:line-through}
+.szl span.last{background:var(--denim);border-color:var(--denim);color:var(--paper)}
+.sizes{display:flex;gap:6px;flex-wrap:wrap}
+.sizes button{min-width:48px;height:44px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-weight:700;cursor:pointer;position:relative}
+.sizes button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.sizes button.no{border-color:var(--line);color:#a89d87}
+.sizes button.no[aria-pressed="true"]{background:#a89d87;border-color:#a89d87;color:var(--paper)}
+
+/* бренды */
+.bsearch{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.field{position:relative;flex:1 1 320px;min-width:0}
+.field svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--muted)}
+#q{width:100%;background:var(--paper2);border:2px solid var(--ink);color:var(--ink);padding:15px 18px 15px 46px;font:500 16px var(--f-body);border-radius:0}
+#q::placeholder{color:var(--muted)}
+.count{color:var(--muted);font-variant-numeric:tabular-nums;font-size:14px}
+.az{display:flex;flex-wrap:wrap;gap:6px}
+.az button{font-weight:700;font-size:13px;min-width:36px;height:36px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.az button:hover{border-color:var(--ink)}
+.az button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.az button:disabled{opacity:.3;cursor:default}
+.blist{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0 28px;align-items:start}
+.bgroup{padding-block:12px;border-top:2px solid var(--line);display:grid;grid-template-columns:46px 1fr;gap:12px;align-items:start}
+.bgroup .l{font-weight:900;font-size:20px;color:var(--denim);line-height:1.2;white-space:nowrap}
+.bgroup ul{list-style:none;margin:0;padding:0;display:grid;gap:3px;align-content:start}
+.bgroup li{font-size:15px}
+.bgroup li button{all:unset;cursor:pointer;text-decoration:underline;text-decoration-color:var(--denim);text-underline-offset:3px}
+.bgroup li button:focus-visible{outline:2px solid var(--denim)}
+.bgroup mark{background:var(--powder);color:var(--ink);padding:0 1px}
+
+/* FAQ, о нас */
+.faq{border-top:2px solid var(--ink);max-width:820px}
+.faq details{border-bottom:2px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;padding:18px 0;font-weight:700;font-size:clamp(17px,1.6vw,20px)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-weight:400;font-size:24px;line-height:1}
+.faq details[open] summary::after{content:"−"}
+.faq p{margin:0 0 18px;color:var(--muted);max-width:62ch}
+.about{display:grid;gap:18px;max-width:760px}
+.about p{margin:0;font-size:clamp(17px,1.6vw,20px)}
+.about .first{font-family:var(--f-bold);font-size:clamp(24px,3vw,38px);line-height:1.1;text-transform:uppercase}
+
+/* карточка вещи */
+.pgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+@media (max-width:880px){.pgrid{grid-template-columns:minmax(0,1fr)}}
+.tryon,.pinfo,.pinfo>*,.tryon>*{min-width:0}
+.tryon{background:var(--ink);color:var(--paper);padding:clamp(14px,2vw,22px);display:grid;gap:14px}
+.tryon h3{margin:0;font-family:var(--f-bold);font-weight:400;font-size:22px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:baseline;gap:4px 10px;flex-wrap:wrap}
+.tryon h3 small{font-family:var(--f-body);font-size:13px;color:var(--powder);text-transform:none;font-weight:500}
+.stage{position:relative;aspect-ratio:3/4;max-width:100%;background:var(--paper);overflow:hidden;touch-action:none;user-select:none}
+.stage img.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage .mannequin{position:absolute;inset:0;width:100%;height:100%}
+.garm{position:absolute;left:0;top:0;width:52%;cursor:grab;transform-origin:50% 50%}
+.garm:active{cursor:grabbing}
+.garm svg{display:block;width:100%;height:auto;filter:drop-shadow(2px 6px 6px rgba(0,0,0,.22))}
+.garm.active{outline:2px dashed var(--denim);outline-offset:4px}
+.stage .badge{position:absolute;left:10px;top:10px;background:var(--ink);color:var(--paper);font-size:12px;font-weight:600;padding:4px 8px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:2px solid var(--paper)}
+.seg button{background:transparent;color:var(--paper);border:0;padding:8px 14px;font-weight:600;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+.slider{display:grid;grid-template-columns:80px 1fr;gap:12px;align-items:center;font-size:14px;color:var(--powder)}
+.slider input{width:100%;accent-color:var(--powder)}
+.tryon .btn{border-color:var(--paper);background:var(--paper);color:var(--ink)}
+.tryon .btn:hover{background:transparent;color:var(--paper)}
+.tryon .btn.ghost{background:transparent;color:var(--paper)}
+.tryon .btn.ghost:hover{background:var(--paper);color:var(--ink)}
+.picklabel{font-size:14px;color:var(--powder);margin-bottom:8px}
+.pick{display:flex;gap:8px;flex-wrap:wrap}
+.pick button{border:2px solid #3b4669;background:transparent;color:var(--paper);padding:6px 10px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.pick button i{width:12px;height:12px;border:1px solid var(--paper);display:inline-block}
+.pick button[aria-pressed="true"]{border-color:var(--powder);background:#2a3558}
+.pinfo{display:grid;gap:18px;align-content:start}
+.pinfo .pb{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.pinfo h1{margin:0;font-family:var(--f-bold);font-weight:400;font-size:clamp(28px,3.6vw,46px);line-height:1;text-transform:uppercase}
+.pinfo .avail{font-weight:600}
+.pinfo .avail b{color:var(--denim)}
+.lbl2{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.chart{border:2px solid var(--ink)}
+.chart summary{cursor:pointer;padding:12px 14px;font-weight:700;list-style:none;display:flex;justify-content:space-between}
+.chart summary::-webkit-details-marker{display:none}
+.chart summary::after{content:"+"}
+.chart[open] summary::after{content:"−"}
+.tbl{overflow-x:auto;border-top:2px solid var(--ink)}
+.tbl table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14px;min-width:420px}
+.tbl th,.tbl td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line)}
+.tbl th{font-weight:700;color:var(--muted);font-size:12px;text-transform:uppercase}
+.tbl tr.sel td{background:var(--ink);color:var(--paper)}
+.chart .note{margin:0;padding:10px 14px;font-size:13px;color:var(--muted)}
+.ai{background:var(--paper2);border:2px solid var(--ink);padding:16px;display:grid;gap:12px}
+.ai h3{margin:0;font-size:16px;font-weight:800;text-transform:uppercase}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:480px){.fields{grid-template-columns:repeat(2,minmax(0,1fr))}.fields .fw{grid-column:1/-1}}
+.fields label{display:grid;gap:4px;font-size:12px;font-weight:600;color:var(--muted)}
+.fields input,.fields select{width:100%;min-width:0;border:2px solid var(--ink);background:var(--paper);color:var(--ink);padding:9px 10px;font:500 15px var(--f-body);border-radius:0}
+.ai p{margin:0}
+.priv{font-size:12px;color:var(--muted)}
+
+/* избранное, бронь, тост */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--paper);border-left:2px solid var(--ink);z-index:70;transform:translateX(105%);transition:transform .3s ease;display:flex;flex-direction:column;padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px))}
+.drawer.open{transform:none}
+.drawer .dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.drawer h3{margin:0;font-family:var(--f-bold);font-weight:400;font-size:26px;text-transform:uppercase}
+.flist{list-style:none;margin:0;padding:0;display:grid;gap:10px;overflow:auto;flex:1;min-height:0;align-content:start}
+.flist li{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;border-bottom:2px solid var(--line);padding-bottom:10px}
+.flist li svg{width:56px;height:auto}
+.flist li b{display:block;font-size:14px;line-height:1.25}
+.flist li span{font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:600}
+.flist .rm{border:0;background:none;color:var(--muted);cursor:pointer;font-size:14px;text-decoration:underline}
+.drawer .foot{display:grid;gap:10px;padding-top:14px}
+.scrim{position:fixed;inset:0;background:rgba(28,37,65,.35);z-index:69;opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.on{opacity:1;pointer-events:auto}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:72;background:var(--paper);border:2px solid var(--ink);width:min(440px,calc(100% - 32px));padding:24px;display:grid;gap:14px}
+.modal h3{margin:0;font-family:var(--f-bold);font-weight:400;font-size:22px;text-transform:uppercase}
+.msg{background:var(--paper2);border:2px dashed var(--line);padding:12px;font-size:14px;margin:0;white-space:pre-wrap;user-select:all}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160%);background:var(--ink);color:var(--paper);padding:12px 18px;font-weight:600;z-index:80;transition:transform .3s ease,opacity .3s;max-width:calc(100% - 32px);opacity:0;pointer-events:none}
+.toast.on{transform:translate(-50%,0);opacity:1}
+
+/* без рамок: блоки отделяются заливкой, а не обводкой */
+.btn,.chip,.iconbtn,.x,.item .pic,.item .heart,.qty,.qty span,.sizes button,.chart,.ai,.modal,.drawer,.msg,.az button,.seg,.seg button,.pick button,.fields input,.fields select,.clines select,.sfield input,#q,.item .tag,.tbl,.stage,.szl span,.cats,.results,.faq,.stock{border:0!important}
+.btn{background:var(--ink);color:var(--paper)}
+.btn:hover{background:var(--denim);color:var(--paper)}
+.btn.ghost{background:var(--paper2);color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.tryon .btn{background:var(--paper);color:var(--ink)}
+.tryon .btn:hover{background:var(--powder);color:var(--ink)}
+.tryon .btn.ghost{background:#2a3558;color:var(--paper)}
+.tryon .btn.ghost:hover{background:var(--paper);color:var(--ink)}
+.chip{background:var(--paper2)}
+.chip:hover{background:var(--line)}
+.chip[aria-pressed="true"],.chip[aria-pressed="true"]:hover{background:var(--ink);color:var(--paper)}
+.iconbtn{background:var(--paper2)}
+.iconbtn:hover{background:var(--ink);color:var(--paper)}
+.iconbtn.plain{background:transparent}
+.cartbtn{background:var(--ink);color:var(--paper)}
+.cartbtn:hover{background:var(--denim);color:var(--paper)}
+.x{background:var(--paper2)}
+.x:hover{background:var(--ink);color:var(--paper)}
+.item .pic{box-shadow:none}
+.item .heart{background:var(--paper)}
+.qty{background:var(--paper2)}
+.qty button:hover:not(:disabled){background:var(--line);color:var(--ink)}
+.sizes button{background:var(--paper2)}
+.sizes button:hover{background:var(--line)}
+.sizes button.no{background:transparent;color:#a89d87}
+.sizes button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.sizes button.no[aria-pressed="true"]{background:#a89d87;color:var(--paper)}
+.szl span{background:var(--paper2)}
+.szl span.no{background:transparent}
+.szl span.last{background:var(--denim);color:var(--paper)}
+.chart{background:var(--paper2)}
+.tbl th,.tbl td{border-bottom-color:var(--paper)}
+.modal{box-shadow:0 20px 60px rgba(28,37,65,.28)}
+.drawer.open{box-shadow:-20px 0 60px rgba(28,37,65,.18)}
+.az button{background:var(--paper2)}
+.az button:hover{background:var(--line)}
+.az button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg{background:#2a3558}
+.pick button{background:#2a3558}
+.pick button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+.pick button i{border:0;border-radius:50%}
+.fields input,.fields select,.clines select{background:var(--paper)}
+.sfield input,#q{background:var(--paper2)}
+#cForm input{background:var(--paper2)}
+.garm.active{outline:0}
+.garm.active svg{filter:drop-shadow(0 0 0 rgba(0,0,0,0)) drop-shadow(0 0 10px rgba(61,90,138,.55))}
+.stage .badge{border-radius:0}
+
+/* галерея вещи */
+.gallery{position:relative;display:grid;gap:10px;min-width:0}
+.gmain{aspect-ratio:4/5;background:var(--paper2);position:relative;overflow:hidden;touch-action:pan-y;user-select:none}
+.gmain .slide{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .35s}
+.gmain .slide>svg{width:100%;height:100%}
+.gmain .slide.flat>svg{width:68%;height:auto}
+.gmain .cap{position:absolute;left:12px;bottom:10px;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.garr{position:absolute;top:calc(50% - 40px);width:44px;height:44px;border:0;background:var(--paper);color:var(--ink);font-size:20px;cursor:pointer;z-index:2}
+.garr:hover{background:var(--ink);color:var(--paper)}
+.garr.prev{left:10px}.garr.next{right:10px}
+.gthumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.gthumbs button{aspect-ratio:1;background:var(--paper2);border:0;padding:6px;cursor:pointer;opacity:.6;display:grid;place-items:center}
+.gthumbs button>svg{width:100%;height:100%}
+.gthumbs button[aria-pressed="true"]{opacity:1;box-shadow:inset 0 -3px 0 var(--ink)}
+.tryon{margin-top:clamp(28px,4vw,48px)}
+.tgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,3vw,32px);align-items:start}
+.tctl{display:grid;gap:14px;align-content:start}
+@media (max-width:760px){.tgrid{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap">
+    <button class="iconbtn hl plain" type="button" data-open="menuSheet" aria-label="Поиск и меню"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="lbl">Поиск</span></button>
+    <a class="logo" href="#top">N<span class="o3">3</span>GATIVNO</a>
+    <div class="hr hbtns"><button class="iconbtn cartbtn" id="cartOpen" type="button" aria-label="Корзина" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8h14l-1.5 12h-11z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><b id="cartCount">0</b></button><button class="iconbtn" id="favOpen" type="button" aria-label="Избранное">♡ <b id="favCount">0</b></button></div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero" id="hero">
+    <div class="lens" id="lens" aria-hidden="true"></div>
+    <div class="wrap">
+      <h1 class="word" id="word"><span id="heroWord">N<span class="o3">3</span>GATIVNO</span></h1>
+      <div class="hero-foot">
+        <p class="claim">Отбор вместо ассортимента.</p>
+        <p>Здесь висит то, что остальные поймут через сезон. Без лишнего шума: пара штук на размер, и вещь уходит к тому, кто узнал её первым.</p>
+        <div class="ctas"><button class="btn" type="button" data-open="catSheet">Смотреть всё</button><button class="btn ghost" type="button" data-open="stockSheet">Что есть в зале</button></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="popular">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="bold">Популярное</h2>
+        <p class="lead">То, за чем приходят чаще всего. Нажми на вещь, чтобы выбрать размер и примерить онлайн.</p>
+      </div>
+      <div class="grid" id="popGrid"></div>
+      <div class="more"><button class="btn ghost" type="button" data-open="catSheet">Весь ассортимент →</button></div>
+    </div>
+  </section>
+
+  <section class="story" id="story">
+    <div class="wrap">
+      <div class="story-in">
+        <h2 class="bold story-h">Плёнку проявляют в темноте, и на ней остаётся только то, что было в кадре на самом деле.</h2>
+        <div class="story-txt"><p>Громкое имя не пропуск, тихий старт не приговор, остаётся то, у чего есть почерк. По паре штук на размер, ценники без пояснений.</p></div>
+      </div>
+      <div class="finale" id="finale" aria-label="N3GATIVNO">
+        <div class="stage3d" id="stage3d"><p class="big3d" id="big3d">N<span class="o3">3</span>GATIVNO</p></div>
+      </div>
+      <div class="under"><span>Концепт-стор одежды · Москва · @n3gativno</span><span><button type="button" data-open="faqSheet">FAQ</button> · <button type="button" data-open="aboutSheet">О нас</button> · <button type="button" data-open="brandsSheet">Бренды</button></span></div>
+    </div>
+  </section>
+</main>
+
+<!-- меню и поиск -->
+<div class="sheet" id="menuSheet" role="dialog" aria-modal="true" aria-label="Поиск и меню" hidden>
+  <div class="sheet-bar"><div class="wrap"><label class="sfield" for="sq" style="flex:1"><span class="sr">Поиск по вещам и брендам</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="sq" type="search" placeholder="Худи, Supreme, карго…" autocomplete="off"></label><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div></div>
+  <div class="wrap sheet-body">
+    <div id="sres" hidden>
+      <div class="results" id="sresList"></div>
+    </div>
+    <div class="menu" id="menuMain">
+      <div><h3>Одежда</h3><ul class="cats" id="cats"></ul></div>
+      <div class="links"><h3>Ещё</h3>
+        <button type="button" data-open="catSheet">Весь ассортимент</button>
+        <button type="button" data-open="stockSheet">В зале сейчас</button>
+        <button type="button" data-open="brandsSheet">Бренды</button>
+        <button type="button" data-open="faqSheet">FAQ</button>
+        <button type="button" data-open="aboutSheet">О нас</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ассортимент -->
+<div class="sheet" id="catSheet" role="dialog" aria-modal="true" aria-labelledby="catTitle" hidden>
+  <div class="sheet-bar"><div class="wrap"><h2 class="bold" id="catTitle">Ассортимент</h2><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div></div>
+  <div class="wrap sheet-body">
+    <div class="filters" id="typeF" role="group" aria-label="Категория"></div>
+    <div class="filters" id="brandF" role="group" aria-label="Бренд"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+
+<!-- в зале -->
+<div class="sheet" id="stockSheet" role="dialog" aria-modal="true" aria-labelledby="stockTitle" hidden>
+  <div class="sheet-bar"><div class="wrap"><h2 class="bold" id="stockTitle">В зале сейчас</h2><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div></div>
+  <div class="wrap sheet-body">
+    <p class="lead">Что физически висит в магазине и в каких размерах. Выбери свой размер, и покажем только то, что подойдёт.</p>
+    <div class="stockctl"><div class="sizes" id="stSizes" role="group" aria-label="Мой размер"></div><label class="tgl" for="stOnly"><input id="stOnly" type="checkbox" checked> Только в наличии</label></div>
+    <div class="stock" id="stock"></div>
+    <p class="muted" id="stockUpd" style="font-size:13px;margin:0"></p>
+  </div>
+</div>
+
+<!-- бренды -->
+<div class="sheet" id="brandsSheet" role="dialog" aria-modal="true" aria-labelledby="brTitle" hidden>
+  <div class="sheet-bar"><div class="wrap"><h2 class="bold" id="brTitle">Бренды</h2><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div></div>
+  <div class="wrap sheet-body">
+    <div class="bsearch"><label class="field" for="q"><span class="sr">Поиск по брендам</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Например, Protocol Index или Raf Simons" autocomplete="off"></label><span class="count" id="bcount" aria-live="polite"></span></div>
+    <div class="az" id="az" role="group" aria-label="Фильтр по первой букве"></div>
+    <div class="blist" id="blist"></div>
+    <p class="muted" id="bempty" hidden>Такого бренда в списке нет. Проверь написание или сбрось фильтр.</p>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="sheet" id="faqSheet" role="dialog" aria-modal="true" aria-labelledby="faqTitle" hidden>
+  <div class="sheet-bar"><div class="wrap"><h2 class="bold" id="faqTitle">FAQ</h2><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div></div>
+  <div class="wrap sheet-body">
+    <div class="faq">
+      <details open><summary>Как отложить вещь?</summary><p>Открой вещь, выбери размер и нажми «Отложить». Мы подготовим сообщение — отправь его нам в Telegram @n3gativno. Держим вещь 48 часов после подтверждения.</p></details>
+      <details><summary>Как узнать, есть ли мой размер в зале?</summary><p>Открой «В зале сейчас» и выбери свой размер. Останутся только вещи, которые физически висят в магазине. Синий размер — последняя штука.</p></details>
+      <details><summary>Как работает онлайн-примерка?</summary><p>На странице вещи загрузи своё фото в полный рост или выбери манекен. Вещь можно двигать, увеличивать и поворачивать, а снизу добавить что-то в пару. Фото не уходит с твоего устройства, пока ты сам не попросишь ИИ подобрать размер.</p></details>
+      <details><summary>Как понять свой размер?</summary><p>У каждой вещи есть размерная сетка в сантиметрах. Если сомневаешься, введи рост, вес и любимую посадку — подскажем размер по таблице или с помощью ИИ.</p></details>
+      <details><summary>Где вы находитесь?</summary><p>В Москве. Точный адрес и часы работы — в Telegram-канале @n3gativno.</p></details>
+      <details><summary>Есть доставка?</summary><p>Напиши нам в Telegram @n3gativno — расскажем, как удобнее забрать или получить вещь.</p></details>
+    </div>
+  </div>
+</div>
+
+<!-- о нас -->
+<div class="sheet" id="aboutSheet" role="dialog" aria-modal="true" aria-labelledby="abTitle" hidden>
+  <div class="sheet-bar"><div class="wrap"><h2 class="bold" id="abTitle">О нас</h2><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div></div>
+  <div class="wrap sheet-body">
+    <div class="about">
+      <p class="first">N3GATIVNO — концепт-стор одежды в Москве.</p>
+      <p>Плёнку проявляют в темноте, и на ней остаётся только то, что было в кадре на самом деле. Громкое имя не пропуск, тихий старт не приговор, остаётся то, у чего есть почерк.</p>
+      <p>По паре штук на размер, ценники без пояснений.</p>
+      <p class="muted">Telegram: @n3gativno</p>
+    </div>
+  </div>
+</div>
+
+<!-- карточка вещи -->
+<div class="sheet lvl2" id="prodSheet" role="dialog" aria-modal="true" aria-labelledby="pName" hidden>
+  <div class="sheet-bar"><div class="wrap"><button class="back" type="button" data-close>← Назад</button><span class="muted" id="pBar" style="font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.05em"></span><button class="x" type="button" data-close aria-label="Закрыть">✕</button></div></div>
+  <div class="wrap sheet-body">
+    <div class="pgrid">
+      <div class="gallery">
+        <div class="gmain" id="gMain" aria-live="polite"></div>
+        <button class="garr prev" type="button" id="gPrev" aria-label="Предыдущее фото">←</button>
+        <button class="garr next" type="button" id="gNext" aria-label="Следующее фото">→</button>
+        <div class="gthumbs" id="gThumbs" role="group" aria-label="Фото вещи"></div>
+      </div>
+      <div class="pinfo">
+        <div><div class="pb" id="pBrand"></div><h1 id="pName"></h1></div>
+        <div class="avail" id="pAvail"></div>
+        <div><div class="lbl2">Размер</div><div class="sizes" id="pSizes" role="group" aria-label="Выбор размера"></div></div>
+        <details class="chart" open>
+          <summary>Размерная сетка</summary>
+          <div class="tbl"><table id="pChart"></table></div>
+          <p class="note">Замеры изделия в сантиметрах, ориентировочно. Точные мерки конкретной вещи пришлём в Telegram.</p>
+        </details>
+        <div class="row"><span class="qty" id="pQty" data-qid=""><button type="button" data-qm aria-label="Меньше">−</button><span>1</span><button type="button" data-qp aria-label="Больше">+</button></span><button class="btn" id="pAdd" type="button" style="height:44px">В корзину</button></div>
+        <div class="row"><button class="btn ghost sm" id="pHold" type="button">Отложить в зале</button><button class="btn ghost sm" id="pFav" type="button">♡ В избранное</button></div>
+        <div class="ai">
+          <h3>Не знаешь свой размер?</h3>
+          <div class="fields">
+            <label for="hIn">Рост, см<input id="hIn" type="number" inputmode="numeric" min="140" max="215" value="178"></label>
+            <label for="wIn">Вес, кг<input id="wIn" type="number" inputmode="numeric" min="40" max="160" value="72"></label>
+            <label for="fitIn" class="fw">Посадка<select id="fitIn"><option value="свободно, оверсайз">Оверсайз</option><option value="по фигуре">По фигуре</option><option value="как обычно, в размер">В размер</option></select></label>
+          </div>
+          <p id="tableOut"></p>
+          <div class="row"><button class="btn sm" id="askBtn" type="button">Спросить ИИ-стилиста</button><button class="btn sm ghost" id="stopBtn" type="button" hidden>Стоп</button></div>
+          <p id="aiOut" hidden></p>
+          <div class="row" id="aiActs" hidden><button class="btn sm" id="wearBtn" type="button">Надеть пару</button></div>
+          <p class="priv" id="privNote">Стилист учтёт фото из примерки, если оно загружено. Фото уходит ему только по нажатию кнопки.</p>
+        </div>
+      </div>
+    </div>
+    <section class="tryon" aria-labelledby="tryTitle">
+      <h3 id="tryTitle">Онлайн-примерка <small id="stageHint">загрузи фото в полный рост или примеряй на манекене, двигай вещь пальцем или мышью</small></h3>
+      <div class="tgrid">
+        <div><div class="stage" id="stage">
+          <svg class="mannequin" id="mannequin" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <rect width="300" height="400" fill="#f1ece3"/>
+            <g fill="#dcd2c1"><circle cx="150" cy="58" r="28"/><rect x="138" y="82" width="24" height="18"/><path d="M96 104 Q150 92 204 104 L214 220 L196 222 L190 140 L188 230 L112 230 L110 140 L104 222 L86 220 Z"/><path d="M112 230 L188 230 L192 388 L160 388 L150 262 L140 388 L108 388 Z"/></g>
+          </svg>
+          <img class="photo" id="photo" alt="Твоё фото" hidden>
+          <div class="garm" id="gBot"></div>
+          <div class="garm" id="gTop"></div>
+          <span class="badge" id="stageBadge">Манекен</span>
+        </div></div>
+        <div class="tctl">
+          <div class="row">
+          <label class="btn sm" for="photoIn" style="cursor:pointer">Загрузить своё фото</label>
+          <input id="photoIn" type="file" accept="image/jpeg,image/png,image/webp" class="sr">
+          <button class="btn sm ghost" id="photoClear" type="button" hidden>Убрать фото</button>
+          <span class="seg" role="group" aria-label="Что двигаем"><button type="button" id="selTop" aria-pressed="true">Верх</button><button type="button" id="selBot" aria-pressed="false">Низ</button></span>
+        </div>
+        <div class="slider"><label for="szR">Размер</label><input id="szR" type="range" min="40" max="180" value="100"></div>
+        <div class="slider"><label for="rotR">Поворот</label><input id="rotR" type="range" min="-30" max="30" value="0"></div>
+        <div><div class="picklabel" id="pairLabel">С чем носить</div><div class="pick" id="pickPair"></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Избранное" aria-hidden="true">
+  <div class="dh"><h3>Избранное</h3><button class="x" id="favClose" type="button" aria-label="Закрыть">✕</button></div>
+  <ul class="flist" id="flist"></ul>
+  <p class="muted" id="fEmpty" style="margin:0">Пока пусто. Жми ♡ на вещах, которые зацепили.</p>
+  <div class="foot">
+    <button class="btn" id="favReserve" type="button">Скопировать список для брони</button>
+    <span class="muted" style="font-size:13px">Отправь его нам в Telegram @n3gativno, отложим на 48 часов.</span>
+  </div>
+</aside>
+<aside class="drawer" id="cartDrawer" aria-label="Корзина" aria-hidden="true">
+  <div class="dh"><h3>Корзина</h3><button class="x" id="cartClose" type="button" aria-label="Закрыть">✕</button></div>
+  <ul class="clines" id="clines"></ul>
+  <p class="muted" id="cEmpty" style="margin:0">Корзина пуста.</p>
+  <div class="foot">
+    <p class="muted" id="cSum" style="margin:0;font-size:14px"></p>
+    <form class="fields" id="cForm" novalidate style="display:grid;grid-template-columns:1fr;gap:6px;margin:0">
+      <label class="lbl2" for="cName">Имя</label>
+      <input id="cName" name="name" autocomplete="given-name" maxlength="60" required>
+      <label class="lbl2" for="cContact">Telegram или телефон</label>
+      <input id="cContact" name="contact" autocomplete="tel" maxlength="60" placeholder="@ник или +7…" required>
+      <input id="cHp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+      <button class="btn" id="cOrder" type="submit" style="margin-top:6px">Оформить заказ</button>
+    </form>
+    <span class="muted" id="cNote" style="font-size:13px">Заказ сразу придёт нам — напишем тебе в Telegram, подтвердим наличие и пришлём ссылку на оплату. Не больше 8 штук одной вещи.</span>
+    <button class="btn ghost sm" id="cClear" type="button">Очистить корзину</button>
+  </div>
+</aside>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+  <h3 id="mTitle">Отложить на 48 часов</h3>
+  <p style="margin:0" id="mItem"></p>
+  <div><div class="lbl2">Размер</div><div class="sizes" id="mSizes"></div></div>
+  <p class="msg" id="mMsg"></p>
+  <div class="row"><button class="btn" id="mCopy" type="button">Скопировать сообщение</button><button class="btn ghost" id="mClose" type="button">Закрыть</button></div>
+  <span class="muted" style="font-size:13px">Вставь его в чат с @n3gativno в Telegram. Подтвердим бронь ответом.</span>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// Интро: N3GATIVNO собирается из частиц внизу экрана и поднимается на своё место
+(()=>{
+  const root=document.documentElement,hw=document.getElementById('heroWord'),word=document.getElementById('word');
+  const fitW=()=>{word.style.fontSize='';const pe=word.parentElement,ps=getComputedStyle(pe);const a=pe.clientWidth-parseFloat(ps.paddingLeft)-parseFloat(ps.paddingRight);const w=hw.scrollWidth;if(w>a)word.style.fontSize=(parseFloat(getComputedStyle(word).fontSize)*a/w*.98)+'px'};
+  fitW();addEventListener('resize',fitW);if(document.fonts)document.fonts.ready.then(fitW);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||!window.requestAnimationFrame)return;
+  root.classList.add('intro');
+  let finished=false;
+  const finish=()=>{if(finished)return;finished=true;root.classList.remove('intro');const c=document.getElementById('dust');if(c){c.style.opacity='0';setTimeout(()=>c.remove(),700)}};
+  setTimeout(finish,7000);
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  (async()=>{
+    try{await Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),sleep(1500)])}catch(e){}
+    fitW();if(scrollY>innerHeight*0.6){finish();return}
+    const hr=hw.getBoundingClientRect();if(!hr.width){finish();return}
+    const hcs=getComputedStyle(hw),hfs=parseFloat(hcs.fontSize),fam=hcs.fontFamily;
+    const css=getComputedStyle(root),ink=css.getPropertyValue('--ink').trim()||'#1c2541',acc=css.getPropertyValue('--denim').trim()||'#3d5a8a';
+    const W=Math.ceil(innerWidth),H=Math.ceil(innerHeight);
+    const off=document.createElement('canvas');off.width=W;off.height=H;
+    const o=off.getContext('2d',{willReadFrequently:true});
+    const TXT='N3GATIVNO',LS=(parseFloat(hcs.letterSpacing)||0)/hfs;
+    const lay=fs=>{o.font=`900 ${fs}px ${fam}`;let w=0;for(const ch of TXT)w+=o.measureText(ch).width+LS*fs;return w};
+    const bfs=hfs;lay(bfs);
+    const cap=o.measureText('N').actualBoundingBoxAscent||bfs*0.72;
+    const lift=Math.max(0,Math.min(H*0.3,H/2-cap/2-bfs*0.25-12));const bx=hr.left,bBase=H/2+cap/2+lift;
+    let x=bx;o.textBaseline='alphabetic';
+    for(const ch of TXT){
+      if(ch==='3'){o.strokeStyle=acc;o.lineWidth=Math.max(2,bfs*0.045);o.lineJoin='round';o.strokeText(ch,x,bBase)}else{o.fillStyle=ink;o.fillText(ch,x,bBase)}
+      x+=o.measureText(ch).width+LS*bfs;
+    }
+    const tw=x-bx;
+    const hm=o.measureText('N');
+    const ha=hm.fontBoundingBoxAscent||hfs*0.95,hd=hm.fontBoundingBoxDescent||hfs*0.25;
+    const hBase=hr.top+(hr.height-(ha+hd))/2+ha;
+    const data=o.getImageData(0,0,W,H).data;
+    const step=Math.max(2,Math.round(bfs/40));
+    const pts=[];
+    for(let y=Math.floor(bBase-cap*1.15);y<Math.min(H,bBase+bfs*0.2);y+=step)for(let xx=Math.max(0,Math.floor(bx-4));xx<Math.min(W,bx+tw+6);xx+=step){
+      const i=(y*W+xx)*4;if(data[i+3]>110)pts.push([xx,y,(data[i+2]-data[i])>60&&data[i+1]>60?1:0]);
+    }
+    if(!pts.length){finish();return}
+    const cv=document.createElement('canvas');cv.id='dust';document.body.appendChild(cv);
+    const dpr=Math.min(2,devicePixelRatio||1);cv.width=W*dpr;cv.height=H*dpr;
+    const c=cv.getContext('2d');c.scale(dpr,dpr);
+    const P=pts.map(([tx,ty,k])=>{const a=Math.random()*Math.PI*2,d=Math.max(W,H)*(0.35+Math.random()*0.5);
+      return{tx,ty,k,fx:tx,fy:hBase+(ty-bBase),sx:W/2+Math.cos(a)*d,sy:H/2+Math.sin(a)*d,del:Math.random()*600,sz:step*0.85+Math.random()*0.6}});
+    const T1=1700,HOLD=350,T2=1000;
+    const ease=t=>1-Math.pow(1-t,3),io=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    const t0=performance.now();
+    const frame=now=>{
+      if(finished)return;
+      const t=now-t0;
+      const u=t<T1+HOLD?0:io(Math.min(1,(t-T1-HOLD)/T2));
+      c.clearRect(0,0,W,H);
+      for(const k of [0,1]){
+        c.fillStyle=k?acc:ink;
+        for(const p of P){if(p.k!==k)continue;
+          const q=ease(Math.min(1,Math.max(0,(t-p.del)/(T1-600))));
+          const wob=(1-q)*14*Math.sin(t/180+p.tx);
+          const ax=p.sx+(p.tx-p.sx)*q+wob,ay=p.sy+(p.ty-p.sy)*q;
+          c.globalAlpha=(0.25+0.75*q)*(1-u*0.3);
+          c.fillRect(ax+(p.fx-ax)*u,ay+(p.fy-ay)*u,p.sz,p.sz);
+        }
+      }
+      c.globalAlpha=1;
+      if(u>=1){finish();return}
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  })().catch(finish);
+})();
+
+(()=>{
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+  let toastT;const toast=t=>{const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('on'),2400)};
+  const copy=async(text,okMsg)=>{try{await navigator.clipboard.writeText(text);toast(okMsg);return true}catch(e){toast('Не получилось скопировать. Выдели текст вручную');return false}};
+
+  // ——— каталог ———
+  // type: tees — футболки, hoodies — худи и свитшоты, knit — свитеры и кардиганы, outer — куртки и олимпийки, pants — штаны, shorts — шорты
+  const ITEMS=[
+    {id:'pi-zip',brand:'Protocol Index',name:'Terry Towel Zip Hoodie',color:'красный',hex:'#a3392f',cat:'top',type:'hoodies',shape:'zip',tag:'Новое',pop:1},
+    {id:'pi-tee',brand:'Protocol Index',name:'FK Centerline Dart Washed T-Shirt',color:'графит',hex:'#40434c',cat:'top',type:'tees',shape:'tee'},
+    {id:'pi-cargo',brand:'Protocol Index',name:'Upside Down Cargo Shorts',color:'камуфляж',hex:'#6b6a4a',cat:'bottom',type:'shorts',shape:'shorts',pop:1},
+    {id:'pi-jersey',brand:'Protocol Index',name:'Fake Shoulder Referee Football Jersey',color:'бордовый',hex:'#6b2330',cat:'top',type:'tees',shape:'jersey',tag:'Последняя'},
+    {id:'sup-hood',brand:'Supreme',name:'Box Logo Hooded Sweatshirt',color:'',hex:'#26335f',cat:'top',type:'hoodies',shape:'hoodie',tag:'Новое',pop:1},
+    {id:'sup-tee',brand:'Supreme',name:'Box Logo Tee',color:'',hex:'#f6f3ec',cat:'top',type:'tees',shape:'tee',pop:1},
+    {id:'sup-crew',brand:'Supreme',name:'Small Box Crewneck',color:'',hex:'#8a919c',cat:'top',type:'hoodies',shape:'crew'},
+    {id:'sup-pant',brand:'Supreme',name:'Work Pant',color:'',hex:'#2e2f33',cat:'bottom',type:'pants',shape:'pants'},
+    {id:'chw-detroit',brand:'Carhartt WIP',name:'Detroit Jacket',color:'',hex:'#8a5a2e',cat:'top',type:'outer',shape:'jacket',tag:'Новое',pop:1},
+    {id:'chw-knee',brand:'Carhartt WIP',name:'Single Knee Pant',color:'',hex:'#c9b48e',cat:'bottom',type:'pants',shape:'pants'},
+    {id:'stu-hood',brand:'Stüssy',name:'Basic Stüssy Hoodie',color:'',hex:'#55606e',cat:'top',type:'hoodies',shape:'hoodie',pop:1},
+    {id:'stu-jean',brand:'Stüssy',name:"Big Ol' Jean",color:'',hex:'#3f5f8c',cat:'bottom',type:'pants',shape:'pants'},
+    {id:'cdg-tee',brand:'Comme des Garçons PLAY',name:'Heart Logo T-Shirt',color:'',hex:'#f6f3ec',cat:'top',type:'tees',shape:'tee',pop:1},
+    {id:'cdg-cardi',brand:'Comme des Garçons PLAY',name:'Heart Logo Cardigan',color:'',hex:'#1f2433',cat:'top',type:'knit',shape:'cardigan',tag:'Последняя'},
+    {id:'vtm-hood',brand:'Vetements',name:'Logo Hoodie',color:'',hex:'#141414',cat:'top',type:'hoodies',shape:'hoodie'},
+    {id:'adi-firebird',brand:'Adidas Originals',name:'Firebird Track Top',color:'',hex:'#1b1b1d',cat:'top',type:'outer',shape:'track',pop:1}
+  ];
+  const TYPES=[['tees','Футболки и джерси'],['hoodies','Худи и свитшоты'],['knit','Свитеры и кардиганы'],['outer','Куртки и олимпийки'],['pants','Штаны'],['shorts','Шорты'],['acc','Аксессуары']];
+  const byId=Object.fromEntries(ITEMS.map(i=>[i.id,i]));
+  // Наличие в зале: штук каждого размера (0 — нет). ПРИМЕР — заменить реальными остатками.
+  const STOCK_UPDATED='02.10.2026';
+  const STOCK={
+    'pi-zip':{S:1,M:2,L:1,XL:0},'pi-tee':{S:0,M:1,L:1,XL:1},'pi-cargo':{S:1,M:1,L:0,XL:0},'pi-jersey':{M:1},
+    'sup-hood':{S:0,M:1,L:1,XL:0},'sup-tee':{S:1,M:2,L:2,XL:1},'sup-crew':{M:1,L:0},'sup-pant':{S:1,M:1,L:1,XL:0},
+    'chw-detroit':{M:1,L:1},'chw-knee':{S:1,M:2,L:1},'stu-hood':{S:1,M:1,L:0,XL:1},'stu-jean':{M:1,L:1},
+    'cdg-tee':{XS:1,S:1,M:1,L:0},'cdg-cardi':{S:0,M:1},'vtm-hood':{M:0,L:1},'adi-firebird':{S:1,M:1,L:1,XL:1}
+  };
+  const SIZES=['XS','S','M','L','XL','XXL'];
+  // Ориентировочные размерные сетки, см
+  const CHART={
+    top:{cols:['Размер','Грудь','Длина','Рукав'],rows:{XS:[50,66,60],S:[53,69,61],M:[56,72,62],L:[59,74,63],XL:[62,76,64],XXL:[65,78,65]}},
+    tees:{cols:['Размер','Грудь','Длина','Рукав'],rows:{XS:[49,67,19],S:[52,70,20],M:[55,72,21],L:[58,74,22],XL:[61,76,23],XXL:[64,78,24]}},
+    bottom:{cols:['Размер','Талия','Бёдра','Длина по внутр. шву'],rows:{XS:[72,96,76],S:[76,100,78],M:[80,104,80],L:[84,108,81],XL:[90,114,82],XXL:[96,120,82]}},
+    shorts:{cols:['Размер','Талия','Бёдра','Длина'],rows:{XS:[72,98,50],S:[76,102,51],M:[80,106,52],L:[84,110,53],XL:[90,116,54],XXL:[96,122,55]}}
+  };
+  const chartOf=it=>it.type==='tees'?CHART.tees:it.type==='shorts'?CHART.shorts:it.cat==='bottom'?CHART.bottom:CHART.top;
+  const inStore=id=>Object.entries(STOCK[id]||{}).filter(([,n])=>n>0).map(([z])=>z);
+
+  const PATH={
+    tee:'M64 22 L30 38 L10 74 L36 86 L48 66 L48 210 L152 210 L152 66 L164 86 L190 74 L170 38 L136 22 Q100 48 64 22Z',
+    jersey:'M58 20 L20 34 L6 84 L36 92 L46 70 L48 210 L152 210 L154 70 L164 92 L194 84 L180 34 L142 20 Q100 44 58 20Z',
+    crew:'M64 22 L30 40 L10 188 L34 192 L50 84 L50 212 L150 212 L150 84 L166 192 L190 188 L170 40 L136 22 Q100 46 64 22Z',
+    hoodie:'M64 26 L30 42 L10 188 L34 192 L50 86 L50 212 L150 212 L150 86 L166 192 L190 188 L170 42 L136 26 Q140 -2 100 -4 Q60 -2 64 26Z',
+    zip:'M64 26 L30 42 L10 188 L34 192 L50 86 L50 212 L150 212 L150 86 L166 192 L190 188 L170 42 L136 26 Q140 -2 100 -4 Q60 -2 64 26Z',
+    jacket:'M64 22 L30 40 L10 188 L34 192 L50 84 L50 212 L150 212 L150 84 L166 192 L190 188 L170 40 L136 22 Q100 46 64 22Z',
+    cardigan:'M64 22 L30 40 L10 188 L34 192 L50 84 L50 212 L150 212 L150 84 L166 192 L190 188 L170 40 L136 22 Q100 46 64 22Z',
+    track:'M64 22 L30 40 L10 188 L34 192 L50 84 L50 212 L150 212 L150 84 L166 192 L190 188 L170 40 L136 22 Q100 46 64 22Z',
+    shorts:'M40 12 L160 12 L174 128 L108 136 L100 66 L92 136 L26 128Z',
+    pants:'M46 8 L154 8 L166 214 L112 214 L100 72 L88 214 L34 214Z'
+  };
+  const lum=h=>{const n=parseInt(h.slice(1),16);return(((n>>16)&255)*.299+((n>>8)&255)*.587+(n&255)*.114)/255};
+  const garmentSVG=it=>{
+    const d=PATH[it.shape],stroke=lum(it.hex)>.75?'#1c2541':'rgba(0,0,0,.35)',det=lum(it.hex)>.5?'rgba(28,37,65,.45)':'rgba(255,255,255,.35)';
+    let extra='';
+    if(it.shape==='zip')extra=`<path d="M100 26 L100 212" stroke="${det}" stroke-width="2.5"/><path d="M66 150 L134 150" stroke="${det}" stroke-width="2"/>`;
+    if(it.shape==='hoodie')extra=`<path d="M70 140 L130 140 L136 176 L64 176Z" fill="none" stroke="${det}" stroke-width="2"/>`+(it.brand==='Supreme'?`<rect x="74" y="62" width="52" height="20" fill="#b3202f"/>`:'');
+    if(it.shape==='crew')extra=`<rect x="128" y="70" width="18" height="8" fill="#b3202f"/>`;
+    if(it.shape==='tee'&&it.brand==='Supreme')extra=`<rect x="70" y="66" width="60" height="22" fill="#b3202f"/>`;
+    if(it.shape==='tee'&&it.brand==='Comme des Garçons PLAY')extra=`<g transform="translate(100 96)"><path d="M0 14 L-18 -2 C-26 -12 -12 -24 0 -10 C12 -24 26 -12 18 -2Z" fill="#c8102e"/><circle cx="-6" cy="-2" r="2.6" fill="#fff"/><circle cx="6" cy="-2" r="2.6" fill="#fff"/></g>`;
+    if(it.shape==='jacket')extra=`<path d="M64 22 L84 52 L100 34 L116 52 L136 22" fill="none" stroke="${det}" stroke-width="3"/><path d="M100 34 L100 212" stroke="${det}" stroke-width="2.5"/><rect x="62" y="80" width="26" height="20" fill="none" stroke="${det}" stroke-width="2"/><rect x="112" y="80" width="26" height="20" fill="none" stroke="${det}" stroke-width="2"/>`;
+    if(it.shape==='cardigan')extra=`<path d="M80 30 L100 80 L100 212" fill="none" stroke="${det}" stroke-width="2.5"/><circle cx="106" cy="100" r="3" fill="${det}"/><circle cx="106" cy="130" r="3" fill="${det}"/><circle cx="106" cy="160" r="3" fill="${det}"/><path d="M126 76 c-4 -6 -12 -2 -8 4 l8 8 l8 -8 c4 -6 -4 -10 -8 -4z" fill="#c8102e"/>`;
+    if(it.shape==='track')extra=`<path d="M100 30 L100 212" stroke="rgba(255,255,255,.5)" stroke-width="2"/><path d="M36 44 L16 186 M42 46 L22 188 M48 48 L28 189 M164 44 L184 186 M158 46 L178 188 M152 48 L172 189" stroke="#f2f0ea" stroke-width="2.5"/>`;
+    if(it.shape==='jersey')extra=`<path d="M48 120 L152 120 M48 132 L152 132" stroke="${det}" stroke-width="4"/>`;
+    if(it.shape==='shorts')extra=`<rect x="38" y="70" width="18" height="22" fill="none" stroke="${det}" stroke-width="2" transform="rotate(4 47 81)"/><rect x="144" y="70" width="18" height="22" fill="none" stroke="${det}" stroke-width="2" transform="rotate(-4 153 81)"/>`;
+    if(it.shape==='pants')extra=`<path d="M46 22 L154 22" stroke="${det}" stroke-width="2"/>`;
+    const vb=it.cat==='bottom'?'0 0 200 220':'0 -6 200 222';
+    return `<svg viewBox="${vb}" aria-hidden="true"><path d="${d}" fill="${it.hex}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/>${extra}</svg>`;
+  };
+
+  // ——— панели ———
+  const openStack=[];
+  function openSheet(id,from){
+    const el=$(id);if(!el)return;
+    if(id!=='prodSheet'){document.querySelectorAll('.sheet').forEach(sh=>sh.hidden=true);openStack.length=0}
+    el.hidden=false;el.scrollTop=0;openStack.push({id,from});document.documentElement.style.overflow='hidden';
+    const f=id==='menuSheet'?$('sq'):el.querySelector('[data-close]');setTimeout(()=>f&&f.focus({preventScroll:true}),30);
+    if(id==='stockSheet')renderStock();if(id==='catSheet')renderGrid();
+  }
+  function closeTop(){const top=openStack.pop();if(!top)return;$(top.id).hidden=true;if(!openStack.length)document.documentElement.style.overflow='';if(top.from&&document.contains(top.from)){try{top.from.focus({preventScroll:true})}catch(e){}}}
+  function closeAll(){while(openStack.length)closeTop()}
+  document.addEventListener('click',e=>{
+    const o=e.target.closest('[data-open]');if(o){openSheet(o.dataset.open,o);return}
+    if(e.target.closest('[data-close]')){closeTop();return}
+    const pr=e.target.closest('[data-prod]');if(pr){openProduct(pr.dataset.prod,pr);return}
+    const h=e.target.closest('[data-heart]');if(h){toggleFav(h.dataset.heart);return}
+    const hold=e.target.closest('[data-hold]');if(hold){openModal(hold.dataset.hold)}
+  });
+  addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('modal').hidden){closeModal();return}if($('drawer').classList.contains('open')){openDrawer(false);return}if($('cartDrawer').classList.contains('open')){openCart(false);return}closeTop()});
+
+  // ——— избранное ———
+  let favs=store.get('n3_favs',[]).filter(id=>byId[id]);
+  const saveFavs=()=>{store.set('n3_favs',favs);$('favCount').textContent=favs.length;renderFavs();document.querySelectorAll('[data-heart]').forEach(b=>b.setAttribute('aria-pressed',String(favs.includes(b.dataset.heart))));if(curId)$('pFav').textContent=favs.includes(curId)?'♥ В избранном':'♡ В избранное'};
+  const toggleFav=id=>{favs=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id];saveFavs();if(fType==='fav')renderGrid();toast(favs.includes(id)?'В избранном':'Убрано из избранного')};
+  function renderFavs(){
+    $('flist').innerHTML=favs.map(id=>{const it=byId[id];return `<li>${garmentSVG(it)}<div><b>${esc(it.name)}</b><span>${esc(it.brand)}</span></div><button class="rm" type="button" data-rm="${it.id}">убрать</button></li>`}).join('');
+    $('fEmpty').hidden=favs.length>0;$('favReserve').disabled=!favs.length;
+  }
+  $('flist').addEventListener('click',e=>{const id=e.target.dataset.rm;if(id)toggleFav(id)});
+  const openDrawer=o=>{$('drawer').classList.toggle('open',o);$('drawer').setAttribute('aria-hidden',String(!o));$('scrim').classList.toggle('on',o||!$('modal').hidden)};
+  $('favOpen').onclick=()=>openDrawer(true);$('favClose').onclick=()=>openDrawer(false);
+  $('scrim').onclick=()=>{openDrawer(false);openCart(false);closeModal()};
+  $('favReserve').onclick=()=>copy('Привет, N3GATIVNO! Отложите, пожалуйста, на 48 часов:\n'+favs.map(id=>'— '+byId[id].brand+' '+byId[id].name).join('\n')+'\nРазмеры уточню в чате.','Список скопирован. Отправь его в Telegram @n3gativno');
+
+  // ——— бронь ———
+  let mIt=null,mSize='M';
+  const mText=()=>`Привет, N3GATIVNO! Отложите, пожалуйста, на 48 часов: ${mIt.brand} ${mIt.name}${mIt.color?' ('+mIt.color+')':''}, размер ${mSize}.`;
+  function openModal(id,size){mIt=byId[id];mSize=size||pSize||mySize||'M';$('mItem').textContent=mIt.brand+' · '+mIt.name;
+    $('mSizes').innerHTML=SIZES.map(s=>`<button type="button" data-s="${s}" aria-pressed="${s===mSize}">${s}</button>`).join('');
+    $('mMsg').textContent=mText();$('modal').hidden=false;$('scrim').classList.add('on');$('mCopy').focus()}
+  function closeModal(){if($('modal').hidden)return;$('modal').hidden=true;if(!$('drawer').classList.contains('open'))$('scrim').classList.remove('on')}
+  $('mSizes').addEventListener('click',e=>{const s=e.target.dataset.s;if(!s)return;mSize=s;$('mSizes').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.s===s)));$('mMsg').textContent=mText()});
+  $('mCopy').onclick=async()=>{if(await copy(mText(),'Скопировано. Отправь в Telegram @n3gativno'))closeModal()};
+  $('mClose').onclick=closeModal;
+
+  // ——— корзина ———
+  const MAXQ=8;
+  let cart=store.get('n3_cart',[]).filter(l=>byId[l.id]&&SIZES.includes(l.size)&&l.qty>0);
+  const qOf=id=>cart.filter(l=>l.id===id).reduce((a,l)=>a+l.qty,0);
+  const defSize=id=>{const have=inStore(id);return (mySize&&have.includes(mySize))?mySize:have[0]||mySize||'M'};
+  function addToCart(id,size,n){
+    const room=MAXQ-qOf(id);if(room<=0){toast('Не больше 8 штук одной вещи');return}
+    const add=Math.min(n,room);const l=cart.find(x=>x.id===id&&x.size===size);
+    if(l)l.qty+=add;else cart.push({id,size,qty:add});
+    saveCart(true);toast(`В корзине: ${byId[id].name}, ${size} × ${add}`+(add<n?' (лимит 8 шт.)':''));
+  }
+  function saveCart(bump){
+    store.set('n3_cart',cart);const n=cart.reduce((a,l)=>a+l.qty,0);
+    $('cartCount').textContent=n;$('cartOpen').hidden=!n;
+    if(bump&&n){const b=$('cartOpen');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}
+    renderCart();syncQty();
+  }
+  function renderCart(){
+    $('clines').innerHTML=cart.map((l,i)=>{const it=byId[l.id],room=MAXQ-qOf(l.id);
+      return `<li>${garmentSVG(it)}<div><span class="cb">${esc(it.brand)}</span><b>${esc(it.name)}</b>
+      <div class="cctl"><label class="sr" for="cs${i}">Размер</label><select id="cs${i}" data-ci="${i}">${SIZES.map(z=>`<option${z===l.size?' selected':''}>${z}</option>`).join('')}</select>
+      <span class="qty"><button type="button" data-cm="${i}" aria-label="Меньше"${l.qty<=1?' disabled':''}>−</button><span>${l.qty}</span><button type="button" data-cp="${i}" aria-label="Больше"${room<=0?' disabled':''}>+</button></span>
+      <button class="rm" type="button" data-cr="${i}" style="border:0;background:none;color:var(--muted);text-decoration:underline;cursor:pointer">убрать</button></div></div></li>`}).join('');
+    const n=cart.reduce((a,l)=>a+l.qty,0);
+    $('cEmpty').hidden=!!n;$('cOrder').disabled=!n;$('cClear').hidden=!n;
+    $('cSum').textContent=n?`${n} шт. · цены уточним в Telegram`:'';
+  }
+  $('clines').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;
+    if(t.dataset.cm!==undefined){const l=cart[+t.dataset.cm];if(l.qty>1){l.qty--;saveCart()}}
+    else if(t.dataset.cp!==undefined){const l=cart[+t.dataset.cp];if(qOf(l.id)<MAXQ){l.qty++;saveCart()}}
+    else if(t.dataset.cr!==undefined){cart.splice(+t.dataset.cr,1);saveCart();if(!cart.length)openCart(false)}});
+  $('clines').addEventListener('change',e=>{const sel=e.target.closest('[data-ci]');if(!sel)return;const i=+sel.dataset.ci,l=cart[i];
+    const same=cart.find((x,j)=>j!==i&&x.id===l.id&&x.size===sel.value);
+    if(same){same.qty+=l.qty;cart.splice(i,1)}else l.size=sel.value;saveCart()});
+  const openCart=o=>{$('cartDrawer').classList.toggle('open',o);$('cartDrawer').setAttribute('aria-hidden',String(!o));$('scrim').classList.toggle('on',o||!$('modal').hidden||$('drawer').classList.contains('open'))};
+  $('cartOpen').onclick=()=>openCart(true);$('cartClose').onclick=()=>openCart(false);
+  $('cClear').onclick=()=>{cart=[];saveCart();openCart(false)};
+  // оформление: заказ уходит продавцу в Telegram через функцию Netlify (/.netlify/functions/order)
+  const orderLines=()=>cart.map(l=>`— ${byId[l.id].brand} ${byId[l.id].name}, ${l.size} × ${l.qty}`);
+  try{const c=store.get('n3_contact',null);if(c){$('cName').value=c.name||'';$('cContact').value=c.contact||''}}catch(e){}
+  $('cForm').addEventListener('submit',async e=>{e.preventDefault();if(!cart.length)return;
+    const name=$('cName').value.trim(),contact=$('cContact').value.trim();
+    if(!name){toast('Напиши имя');$('cName').focus();return}
+    if(contact.replace(/[^\w@+]/g,'').length<4){toast('Укажи Telegram (@ник) или телефон');$('cContact').focus();return}
+    store.set('n3_contact',{name,contact});
+    const btn=$('cOrder');btn.disabled=true;btn.textContent='Отправляем…';
+    try{
+      const r=await fetch('/.netlify/functions/order',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name,contact,company:$('cHp').value,items:cart.map(l=>({brand:byId[l.id].brand,name:byId[l.id].name,size:l.size,qty:l.qty}))})});
+      if(!r.ok)throw new Error(r.status);
+      cart=[];saveCart();openCart(false);
+      toast('Заказ принят! Напишем тебе в Telegram в ближайшее время');
+    }catch(err){
+      // запасной путь, если сервер недоступен: копируем заказ и открываем чат
+      const txt='Привет, N3GATIVNO! Хочу заказать:\n'+orderLines().join('\n')+`\nИмя: ${name}, контакт: ${contact}`;
+      if(await copy(txt,'Не получилось отправить. Заказ скопирован — вставь его в чат'))window.open('https://t.me/n3gativno','_blank','noopener');
+    }finally{btn.textContent='Оформить заказ';btn.disabled=!cart.length}
+  });
+  // счётчики количества на карточках и на странице вещи
+  function syncQty(){document.querySelectorAll('.qty[data-qid]').forEach(q=>{const id=q.dataset.qid;if(!id)return;const room=MAXQ-qOf(id),sp=q.querySelector('span');let v=Math.max(1,Math.min(+sp.textContent||1,Math.max(1,room)));sp.textContent=v;
+    q.querySelector('[data-qm]').disabled=v<=1;q.querySelector('[data-qp]').disabled=v>=room;const add=q.parentElement.querySelector('[data-add]')||(q.id==='pQty'?$('pAdd'):null);if(add){add.disabled=room<=0;if(room<=0)add.textContent='Лимит 8 шт.';else if(add.id!=='pAdd')add.textContent='В корзину'}})}
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-qm],[data-qp]');if(!b)return;const q=b.closest('.qty[data-qid]');if(!q)return;const sp=q.querySelector('span');sp.textContent=(+sp.textContent||1)+(b.hasAttribute('data-qp')?1:-1);syncQty()});
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;const id=b.dataset.add,q=b.parentElement.querySelector('.qty span');addToCart(id,defSize(id),+q.textContent||1);q.textContent=1;syncQty()});
+
+  // ——— карточки ———
+  const card=it=>`<article class="item">
+      <button class="heart" type="button" data-heart="${it.id}" aria-pressed="${favs.includes(it.id)}" aria-label="В избранное: ${esc(it.name)}">♡</button>
+      <button class="open" type="button" data-prod="${it.id}" aria-label="${esc(it.brand+' '+it.name)}">
+        <span class="pic">${it.tag?`<span class="tag">${it.tag}</span>`:''}${garmentSVG(it)}<span class="soon">фото скоро</span></span>
+        <span class="brand">${esc(it.brand)}${it.color?' · '+it.color:''}</span>
+        <h3>${esc(it.name)}</h3>
+        <span class="instore">${inStore(it.id).length?'В зале: <b>'+inStore(it.id).join(' · ')+'</b>':'В зале нет · под заказ'}</span>
+      </button>
+      <div class="addrow"><span class="qty" data-qid="${it.id}"><button type="button" data-qm aria-label="Меньше">−</button><span>1</span><button type="button" data-qp aria-label="Больше">+</button></span><button class="btn sm" type="button" data-add="${it.id}">В корзину</button></div>
+    </article>`;
+  $('popGrid').innerHTML=ITEMS.filter(i=>i.pop).slice(0,8).map(card).join('');
+
+  // ——— ассортимент ———
+  let fType='all',fBrand='all';
+  const brandsInCat=[...new Set(ITEMS.map(i=>i.brand))];
+  $('typeF').innerHTML=[['all','Всё'],...TYPES.filter(t=>t[0]!=='acc'),['fav','♡ Избранное']].map(([v,l])=>`<button class="chip" type="button" data-t="${v}">${l}</button>`).join('');
+  $('brandF').innerHTML=[['all','Все бренды'],...brandsInCat.map(b=>[b,b.toUpperCase()])].map(([v,l])=>`<button class="chip" type="button" data-b="${esc(v)}">${esc(l)}</button>`).join('');
+  $('typeF').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;fType=b.dataset.t;renderGrid()});
+  $('brandF').addEventListener('click',e=>{const b=e.target.closest('[data-b]');if(!b)return;fBrand=b.dataset.b;renderGrid()});
+  function renderGrid(){
+    const list=ITEMS.filter(it=>(fType==='all'||it.type===fType||(fType==='fav'&&favs.includes(it.id)))&&(fBrand==='all'||it.brand===fBrand));
+    const tl=TYPES.find(t=>t[0]===fType);
+    $('catTitle').textContent=tl?tl[1]:fType==='fav'?'Избранное':fBrand!=='all'?fBrand:'Ассортимент';
+    $('grid').innerHTML=list.length?list.map(card).join(''):`<p class="muted">${fType==='acc'?'Аксессуары скоро появятся. Загляни позже.':fType==='fav'?'Здесь пока пусто. Жми ♡ на вещах, и они появятся тут.':'По этим фильтрам ничего нет. Сбрось один из них.'}</p>`;
+    syncQty();
+    $('typeF').querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===fType)));
+    $('brandF').querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.b===fBrand)));
+  }
+
+  // ——— меню и поиск ———
+  $('cats').innerHTML=TYPES.map(([v,l])=>{const n=ITEMS.filter(i=>i.type===v).length;return `<li><button type="button" data-cat="${v}">${l}<small>${n?n+' шт.':'скоро'}</small></button></li>`}).join('');
+  $('cats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;fType=b.dataset.cat;fBrand='all';openSheet('catSheet',$('favOpen'))});
+  const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9а-яё]/g,'');
+  const TYPE_WORDS={tees:'футболка футболки джерси тишка',hoodies:'худи кофта кофты свитшот толстовка зип',knit:'свитер свитеры кардиган вязаный трикотаж кофта',outer:'куртка куртки олимпийка ветровка джакет',pants:'штаны брюки джинсы',shorts:'шорты карго'};
+  $('sq').addEventListener('input',()=>{
+    const t=norm($('sq').value.trim());
+    if(!t){$('sres').hidden=true;$('menuMain').hidden=false;return}
+    const hits=ITEMS.filter(it=>norm(it.brand+' '+it.name+' '+(it.color||'')+' '+(TYPE_WORDS[it.type]||'')).includes(t));
+    const bh=BRANDS.filter(b=>norm(b).includes(t)&&!brandsInCat.includes(b)).slice(0,5);
+    $('sresList').innerHTML=(hits.map(it=>`<button class="res" type="button" data-prod="${it.id}">${garmentSVG(it)}<div><b>${esc(it.name)}</b><span>${esc(it.brand)}</span></div><span>${inStore(it.id).length?'в зале':'под заказ'}</span></button>`).join('')
+      +bh.map(b=>`<button class="res" type="button" data-brandq="${esc(b)}"><span></span><div><b>${esc(b)}</b><span>бренд из списка</span></div><span>→</span></button>`).join(''))
+      ||'<p class="muted" style="padding-top:14px">Ничего не нашли. Попробуй «худи», «карго» или название бренда.</p>';
+    $('sres').hidden=false;$('menuMain').hidden=true;
+  });
+  $('sresList').addEventListener('click',e=>{const b=e.target.closest('[data-brandq]');if(!b)return;openSheet('brandsSheet',$('favOpen'));$('q').value=b.dataset.brandq;renderB()});
+
+  // ——— в зале ———
+  let mySize=store.get('n3_size',null);if(!SIZES.includes(mySize))mySize=null;
+  $('stSizes').innerHTML='<button type="button" data-z="">Все</button>'+SIZES.map(z=>`<button type="button" data-z="${z}">${z}</button>`).join('');
+  $('stSizes').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;mySize=b.dataset.z||null;store.set('n3_size',mySize);renderStock()});
+  $('stOnly').addEventListener('change',renderStock);
+  function renderStock(){
+    $('stSizes').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.z||null)===mySize)));
+    const only=$('stOnly').checked;
+    const rows=ITEMS.filter(it=>{const have=inStore(it.id);if(mySize)return have.includes(mySize)||(!only&&STOCK[it.id]&&mySize in STOCK[it.id]);return only?have.length>0:true});
+    $('stock').innerHTML=rows.length?rows.map(it=>{const st=STOCK[it.id]||{};const zs=SIZES.filter(z=>z in st);
+      return `<div class="srow"><button class="open" type="button" data-prod="${it.id}">${garmentSVG(it)}<div><span class="br">${esc(it.brand)}</span><b>${esc(it.name)}</b><span class="st">${inStore(it.id).length?'В зале':'Нет в зале · под заказ'}</span></div></button>
+      <div class="szl">${zs.length?zs.map(z=>`<span class="${st[z]>1?'':st[z]===1?'last':'no'}">${z}</span>`).join(''):'<span class="no">—</span>'}</div>
+      <div class="acts"><button class="btn sm ghost" type="button" data-hold="${it.id}">Отложить</button></div></div>`}).join('')
+      :'<p class="muted" style="padding-top:16px">В твоём размере сейчас ничего нет. Сними фильтр или загляни после следующей поставки.</p>';
+    $('stockUpd').textContent='Синий размер — последняя штука, зачёркнутый — нет в зале. Обновлено '+STOCK_UPDATED+'.';
+  }
+
+  // ——— примерка ———
+  const stage=$('stage');
+  const L={top:{el:$('gTop'),x:.5,y:.38,s:1,r:0,id:null},bottom:{el:$('gBot'),x:.5,y:.73,s:1,r:0,id:null}};
+  let active='top';
+  const place=k=>{const g=L[k],w=stage.clientWidth,h=stage.clientHeight,gw=g.el.offsetWidth,gh=g.el.offsetHeight;if(!w)return;
+    g.el.style.transform=`translate(${g.x*w-gw/2}px,${g.y*h-gh/2}px) rotate(${g.r}deg) scale(${g.s})`};
+  const dress=k=>{const g=L[k];g.el.innerHTML=g.id?garmentSVG(byId[g.id]):'';g.el.hidden=!g.id;requestAnimationFrame(()=>place(k));renderPair()};
+  function wear(it){const k=it.cat;L[k].id=it.id;setActive(k);dress(k)}
+  function setActive(k){active=k;$('selTop').setAttribute('aria-pressed',String(k==='top'));$('selBot').setAttribute('aria-pressed',String(k==='bottom'));
+    L.top.el.classList.toggle('active',k==='top');L.bottom.el.classList.toggle('active',k==='bottom');
+    $('szR').value=Math.round(L[k].s*100);$('rotR').value=L[k].r}
+  function renderPair(){
+    if(!curId)return;const it=byId[curId],k=it.cat==='top'?'bottom':'top';
+    $('pairLabel').textContent=k==='bottom'?'С чем носить: низ':'С чем носить: верх';
+    $('pickPair').innerHTML=ITEMS.filter(i=>i.cat===k).map(i=>`<button type="button" data-w="${i.id}" aria-pressed="${L[k].id===i.id}"><i style="background:${i.hex}"></i>${esc(i.name)}</button>`).join('')+`<button type="button" data-off="${k}" aria-pressed="${!L[k].id}">Без</button>`;
+  }
+  $('pickPair').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.w)wear(byId[b.dataset.w]);else{L[b.dataset.off].id=null;dress(b.dataset.off)}});
+  $('selTop').onclick=()=>setActive('top');$('selBot').onclick=()=>setActive('bottom');
+  $('szR').oninput=e=>{L[active].s=e.target.value/100;place(active)};
+  $('rotR').oninput=e=>{L[active].r=+e.target.value;place(active)};
+  for(const k of ['top','bottom']){
+    const g=L[k];let drag=null;
+    g.el.addEventListener('pointerdown',e=>{setActive(k);drag={px:e.clientX,py:e.clientY,x:g.x,y:g.y};g.el.setPointerCapture(e.pointerId);e.preventDefault()});
+    g.el.addEventListener('pointermove',e=>{if(!drag)return;g.x=Math.min(1,Math.max(0,drag.x+(e.clientX-drag.px)/stage.clientWidth));g.y=Math.min(1,Math.max(0,drag.y+(e.clientY-drag.py)/stage.clientHeight));place(k)});
+    const end=()=>{drag=null};g.el.addEventListener('pointerup',end);g.el.addEventListener('pointercancel',end);
+  }
+  addEventListener('resize',()=>{place('top');place('bottom')});
+  let photoFile=null,photoURL=null;
+  $('photoIn').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;
+    if(!/^image\/(jpeg|png|webp)$/.test(f.type)){toast('Нужна картинка: JPG, PNG или WebP');return}
+    if(photoURL)URL.revokeObjectURL(photoURL);photoFile=f;photoURL=URL.createObjectURL(f);
+    $('photo').src=photoURL;$('photo').hidden=false;$('mannequin').style.display='none';$('stageBadge').textContent='Твоё фото';$('photoClear').hidden=false;e.target.value=''};
+  $('photoClear').onclick=()=>{if(photoURL)URL.revokeObjectURL(photoURL);photoFile=null;photoURL=null;$('photo').hidden=true;$('photo').removeAttribute('src');$('mannequin').style.display='';$('stageBadge').textContent='Манекен';$('photoClear').hidden=true};
+
+  // ——— галерея вещи (иллюстрации до появления фото) ———
+  const nest=(svg,x,y,w,h)=>svg.replace('<svg ',`<svg x="${x}" y="${y}" width="${w}" height="${h}" `);
+  const figure=(fill,head)=>`<g fill="${fill}"><circle cx="150" cy="58" r="28" fill="${head}"/><rect x="138" y="82" width="24" height="18" fill="${head}"/><path d="M96 104 Q150 92 204 104 L214 220 L196 222 L190 140 L188 230 L112 230 L110 140 L104 222 L86 220 Z"/><path d="M112 230 L188 230 L192 388 L160 388 L150 262 L140 388 L108 388 Z"/></g>`;
+  function modelSVG(it,bg){
+    const top=it.cat==='top'?it:byId['sup-tee'],bot=it.cat==='bottom'?it:byId['chw-knee'];
+    return `<svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="400" fill="${bg}"/>${figure('#c9bca4','#b9ab91')}${nest(garmentSVG(bot),72,206,156,171)}${nest(garmentSVG(top),72,64,156,173)}</svg>`;
+  }
+  const detailSVG=it=>garmentSVG(it).replace(/viewBox="[^"]*"/,it.cat==='top'?'viewBox="40 30 120 120"':'viewBox="30 0 140 140"').replace('<svg ','<svg preserveAspectRatio="xMidYMid slice" ');
+  let gi=0,gSlides=[];
+  function renderGallery(it){
+    gSlides=[
+      {cls:'flat',cap:'Вещь',html:garmentSVG(it)},
+      {cls:'',cap:'На модели',html:modelSVG(it,'#e7dfd2')},
+      {cls:'',cap:'На модели · улица',html:modelSVG(it,'#cfd6e2')},
+      {cls:'',cap:'Деталь',html:detailSVG(it)}
+    ];gi=0;
+    $('gMain').innerHTML=gSlides.map((g,i)=>`<div class="slide ${g.cls}" style="opacity:${i?0:1}" aria-hidden="${!!i}">${g.html}<span class="cap">${g.cap} · иллюстрация, фото скоро</span></div>`).join('');
+    $('gThumbs').innerHTML=gSlides.map((g,i)=>`<button type="button" data-g="${i}" aria-label="${g.cap}" aria-pressed="${!i}">${g.html}</button>`).join('');
+  }
+  function showG(i){gi=(i+gSlides.length)%gSlides.length;[...$('gMain').children].forEach((el,j)=>{el.style.opacity=j===gi?1:0;el.setAttribute('aria-hidden',String(j!==gi))});$('gThumbs').querySelectorAll('button').forEach((b,j)=>b.setAttribute('aria-pressed',String(j===gi)))}
+  $('gThumbs').addEventListener('click',e=>{const b=e.target.closest('[data-g]');if(b)showG(+b.dataset.g)});
+  $('gPrev').onclick=()=>showG(gi-1);$('gNext').onclick=()=>showG(gi+1);
+  let gx=null;$('gMain').addEventListener('pointerdown',e=>{gx=e.clientX});$('gMain').addEventListener('pointerup',e=>{if(gx===null)return;const d=e.clientX-gx;gx=null;if(Math.abs(d)>40)showG(gi+(d<0?1:-1))});
+
+  // ——— карточка вещи ———
+  let curId=null,pSize=null;
+  function openProduct(id,from){
+    const it=byId[id];if(!it)return;curId=id;
+    renderGallery(it);
+    $('pBar').textContent=it.brand;$('pBrand').textContent=it.brand+(it.color?' · '+it.color:'');$('pName').textContent=it.name;
+    const have=inStore(id);
+    $('pAvail').innerHTML=have.length?'В зале: <b>'+have.join(' · ')+'</b>':'В зале нет — привезём под заказ';
+    pSize=(mySize&&have.includes(mySize))?mySize:(have.includes(tableSize())?tableSize():have[0]||tableSize());
+    renderSizes();
+    // примерка: надеть вещь, в пару — первую вещь другой категории, если ничего не выбрано
+    const other=it.cat==='top'?'bottom':'top';
+    L[it.cat].id=id;L[it.cat].s=1;L[it.cat].r=0;L[it.cat].x=.5;L[it.cat].y=it.cat==='top'?.38:.73;
+    if(!L[other].id)L[other].id=other==='bottom'?'chw-knee':'sup-tee';
+    setActive(it.cat);
+    $('aiOut').hidden=true;$('aiActs').hidden=true;updTable();
+    openSheet('prodSheet',from);
+    requestAnimationFrame(()=>{dress('top');dress('bottom')});
+    saveFavs();
+  }
+  function renderSizes(){
+    const it=byId[curId],st=STOCK[curId]||{};
+    $('pSizes').innerHTML=SIZES.map(z=>{const n=st[z]||0;return `<button type="button" data-ps="${z}" class="${n?'':'no'}" aria-pressed="${z===pSize}" title="${n>1?'есть в зале':n===1?'последняя штука':'под заказ'}">${z}</button>`}).join('');
+    const ch=chartOf(it);
+    $('pChart').innerHTML='<thead><tr>'+ch.cols.map(c=>`<th scope="col">${c}</th>`).join('')+'</tr></thead><tbody>'+SIZES.map(z=>`<tr class="${z===pSize?'sel':''}"><td>${z}</td>${ch.rows[z].map(v=>`<td>${v}</td>`).join('')}</tr>`).join('')+'</tbody>';
+    const n=st[pSize]||0;
+    $('pHold').textContent=n?`Отложить ${pSize} в зале`:`Нет ${pSize} в зале`;$('pHold').disabled=!n;
+    if(MAXQ-qOf(curId)>0)$('pAdd').textContent=`В корзину · ${pSize}`;$('pQty').dataset.qid=curId;syncQty();
+  }
+  $('pSizes').addEventListener('click',e=>{const b=e.target.closest('[data-ps]');if(!b)return;pSize=b.dataset.ps;renderSizes()});
+  $('pHold').onclick=()=>openModal(curId,pSize);
+  $('pAdd').onclick=()=>{const q=$('pQty').querySelector('span');addToCart(curId,pSize,+q.textContent||1);q.textContent=1;syncQty()};
+  $('pFav').onclick=()=>toggleFav(curId);
+
+  // ——— размер по таблице ———
+  const tableSize=()=>{const h=+$('hIn').value||178,w=+$('wIn').value||72;
+    let i=h<165?1:h<175?2:h<185?3:4;const bmi=w/Math.pow(h/100,2);if(bmi>27)i++;if(bmi>31)i++;if(bmi<19)i--;
+    if($('fitIn').value.startsWith('свободно'))i++;return SIZES[Math.max(0,Math.min(5,i))]};
+  const updTable=()=>{const z=tableSize();$('tableOut').innerHTML=`По таблице тебе подойдёт <b>${z}</b>. <button class="btn sm ghost" type="button" id="useTable" style="margin-left:6px">Выбрать ${z}</button>`};
+  ['hIn','wIn','fitIn'].forEach(id=>$(id).addEventListener('input',updTable));
+  $('tableOut').addEventListener('click',e=>{if(e.target.id==='useTable'){pSize=tableSize();renderSizes()}});
+
+  // ——— ИИ-стилист ———
+  const samplePromise=(window.claude&&window.claude.use)?window.claude.use('sample').catch(()=>null):Promise.resolve(null);
+  let ctl=null,pair=null;
+  const hideAI=msg=>{$('askBtn').hidden=true;$('privNote').textContent=msg};
+  samplePromise.then(s=>{if(!s)hideAI('ИИ-стилист работает, когда сайт открыт в Claude. Размер выше посчитан по таблице.')});
+  const ERR={rate_limited:'Стилист занят. Попробуй через минуту.',refused:'Стилист не стал отвечать на этот запрос. Попробуй другое фото.',image_rejected:'Фото не подошло. Попробуй другой JPG.',invalid_json:'Ответ пришёл кривым. Нажми ещё раз.',session_expired:'Нужно заново войти в Claude.',empty_completion:'Пустой ответ. Попробуй ещё раз.'};
+  $('askBtn').onclick=async()=>{
+    const s=await samplePromise;if(!s||!curId)return;
+    const it=byId[curId];
+    const caps=await s.limits().catch(()=>null);
+    const useImg=!!(photoFile&&caps&&caps.images);
+    const others=ITEMS.filter(i=>i.cat!==it.cat).map(i=>({id:i.id,brand:i.brand,name:i.name}));
+    const ch=chartOf(it);
+    const prompt=`Ты стилист московского концепт-стора N3GATIVNO. Тон: уверенный, немного дерзкий, на «ты», с намёком, без лозунгов и без пошлости.
+Покупатель смотрит вещь: ${it.brand} ${it.name}${it.color?' ('+it.color+')':''}.
+Размерная сетка этой вещи, см (${ch.cols.join(', ')}): ${JSON.stringify(ch.rows)}.
+Покупатель: рост ${+$('hIn').value||'не указан'} см, вес ${+$('wIn').value||'не указан'} кг, любит посадку: ${$('fitIn').value}.
+${useImg?'На приложенном фото покупатель. Используй фото только чтобы оценить пропорции для размера; не комментируй внешность и не делай выводов о человеке.':''}
+Подбери размер этой вещи и одну вещь в пару ТОЛЬКО из списка: ${JSON.stringify(others)}.
+Ответь ТОЛЬКО JSON-объектом: {"size":"M","sizeNote":"1 предложение, почему этот размер","pair":"id из списка","why":"1–2 коротких предложения, почему пара работает"}`;
+    ctl=new AbortController();
+    $('askBtn').disabled=true;$('stopBtn').hidden=false;$('aiOut').hidden=false;$('aiOut').textContent='Стилист думает…';$('aiActs').hidden=true;
+    try{
+      const r=await s.json(prompt,{signal:ctl.signal,images:useImg?[photoFile]:undefined,cache:false});
+      const size=SIZES.includes(r&&r.size)?r.size:tableSize();
+      pSize=size;renderSizes();
+      const p=byId[r&&r.pair];pair=p&&p.cat!==it.cat?p.id:null;
+      $('aiOut').innerHTML=`<b>Твой размер: ${size}.</b> ${esc(String((r&&r.sizeNote)||''))}`+(pair?`<br>В пару: <b>${esc(byId[pair].name)}</b>. ${esc(String((r&&r.why)||''))}`:'');
+      $('aiActs').hidden=!pair;
+    }catch(e){
+      if(e&&e.code==='cancelled'){$('aiOut').textContent='Остановлено.'}
+      else if(e&&['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].includes(e.code)){$('aiOut').hidden=true;hideAI('ИИ-стилист недоступен. Размер выше посчитан по таблице.')}
+      else if(e&&e.code==='images_unavailable'){$('aiOut').textContent='Здесь фото не отправить стилисту. Убери фото и нажми ещё раз.'}
+      else{$('aiOut').textContent=ERR[e&&e.code]||'Что-то пошло не так. Попробуй ещё раз.'}
+    }finally{$('askBtn').disabled=false;$('stopBtn').hidden=true}
+  };
+  $('stopBtn').onclick=()=>ctl&&ctl.abort();
+  $('wearBtn').onclick=()=>{if(pair){wear(byId[pair]);toast('Пара надета')}};
+
+  // ——— бренды ———
+  const BRANDS=["032c","1017 ALYX 9SM","A-COLD-WALL*","ADER error","Adidas Originals","Ambush","Andreadamo","Ashish","Blumarine","Botter","Carhartt WIP","Carne Bollente","Casablanca","Cav Empt","Comme des Garçons","Comme des Garçons PLAY","Coperni","Craig Green","D'heygere","Diesel","Doublet","Dries Van Noten","Heliot Emil","Heron Preston","Jacquemus","Juicy Couture","JW Anderson","Kiko Kostadinov","KNWLS","Kwaidan Editions","Lemaire","Ludovic de Saint Sernin","Maison Margiela","Marieyat","Marine Serre","Martine Rose","MM6 Maison Margiela","Mowalola","New Balance","Nike","Nina Ricci","Off-White","Olivia von Halle","Ottolinger","Paco Rabanne","Palm Angels","PRISM","Protocol Index","Raf Simons","Rassvet","Reebok","Rhude","Rokh","Stüssy","Supreme","Telfar","Mugler","Vetements","VTMNTS","Wales Bonner","Y/Project","Yeezy"];
+  const keyOf=b=>{const c=norm(b)[0]||'#';return /[0-9]/.test(c)?'0–9':c.toUpperCase()};
+  const sorted=[...BRANDS].sort((a,b)=>norm(a).localeCompare(norm(b)));
+  const az=$('az'),q=$('q');let letter=null;
+  const hl=(name,term)=>{if(!term)return esc(name);const i=name.toLowerCase().indexOf(term.toLowerCase());return i<0?esc(name):esc(name.slice(0,i))+'<mark>'+esc(name.slice(i,i+term.length))+'</mark>'+esc(name.slice(i+term.length))};
+  const mk=(label,val)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.v=val??'';b.addEventListener('click',()=>{letter=(letter===val?null:val);renderB()});return b};
+  az.appendChild(mk('Все',null));[...new Set(sorted.map(keyOf))].forEach(l=>az.appendChild(mk(l,l)));
+  function renderB(){const raw=q.value.trim(),t=norm(raw);
+    const hits=sorted.filter(b=>(!t||norm(b).includes(t))&&(!letter||keyOf(b)===letter));
+    const g={};hits.forEach(b=>(g[keyOf(b)]??=[]).push(b));
+    $('blist').innerHTML=Object.entries(g).map(([l,bs])=>'<div class="bgroup"><span class="l">'+l+'</span><ul>'+bs.map(b=>'<li>'+(brandsInCat.includes(b)?`<button type="button" data-bopen="${esc(b)}">${hl(b,raw)}</button>`:hl(b,raw))+'</li>').join('')+'</ul></div>').join('');
+    $('bempty').hidden=hits.length>0;$('bcount').textContent=hits.length+' из '+BRANDS.length;
+    const av=new Set(sorted.filter(b=>!t||norm(b).includes(t)).map(keyOf));
+    az.querySelectorAll('button').forEach(b=>{const v=b.dataset.v||null;b.setAttribute('aria-pressed',String(v===letter));b.disabled=!!v&&!av.has(v)})}
+  q.addEventListener('input',renderB);
+  $('blist').addEventListener('click',e=>{const b=e.target.closest('[data-bopen]');if(!b)return;fBrand=b.dataset.bopen;fType='all';openSheet('catSheet',$('favOpen'))});
+
+  // ——— линза ———
+  const hero=$('hero'),lens=$('lens');
+  hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect();lens.style.left=(e.clientX-r.left)+'px';lens.style.top=(e.clientY-r.top)+'px';hero.classList.add('on')});
+  hero.addEventListener('pointerleave',()=>hero.classList.remove('on'));
+
+  // ——— 3D-надпись ———
+  const fin=$('finale'),st3=$('stage3d'),big=$('big3d');
+  const sh=[];for(let i=1;i<=12;i++)sh.push(`${(i*.005).toFixed(3)}em ${(i*.005).toFixed(3)}em 0 var(--navy-deep)`);sh.push('.1em .13em .15em rgba(17,25,56,.3)');big.style.textShadow=sh.join(',');
+  const fitBig=()=>{big.style.fontSize='';const w=big.scrollWidth,a=st3.clientWidth;if(w>a)big.style.fontSize=(parseFloat(getComputedStyle(big).fontSize)*a/w*.97)+'px'};
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let tick=false;
+  const upd=()=>{tick=false;if(reduce){st3.style.setProperty('--p',1);return}const r=fin.getBoundingClientRect();st3.style.setProperty('--p',Math.min(1,Math.max(0,(innerHeight-r.top)/Math.min(r.height+120,innerHeight*.75))).toFixed(3))};
+  addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});
+  addEventListener('resize',()=>{fitBig();upd()});fitBig();upd();
+  if(document.fonts)document.fonts.ready.then(()=>{fitBig();upd()});
+
+  renderB();renderStock();renderGrid();saveFavs();updTable();saveCart();
+})();
+</script>
+
+</body>
+</html>
